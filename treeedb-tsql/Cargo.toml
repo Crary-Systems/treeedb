@@ -1,0 +1,13 @@
+[package]
+name = "treeedb-tsql"
+version = "0.0.1"
+edition = "2021"
+description = "Generate Datalog facts from tsql source code"
+keywords = ["datalog", "tsql", "parsing", "souffle"]
+license = "MIT"
+readme = "../README.md"
+
+[dependencies]
+anyhow = "1.0"
+treeedb = { version = "0.1.0", path = "../treeedb", features = ["cli"] }
+tree-sitter-tsql = { path = "../../tree-sitter-tsql" }

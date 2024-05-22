@@ -20,6 +20,7 @@ members = [
     "treeedbgen-souffle-rust",
     "treeedbgen-souffle-souffle",
     "treeedbgen-souffle-swift",
+    "treeedbgen-souffle-tsql",
 ]
 
 [profile.release]

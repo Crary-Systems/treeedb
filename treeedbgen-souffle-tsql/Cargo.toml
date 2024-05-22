@@ -1,0 +1,18 @@
+[package]
+name = "treeedbgen-souffle-tsql"
+version = "0.0.1"
+edition = "2021"
+description = "Generate Soufflé types and relations from the tsql tree-sitter grammar"
+keywords = ["datalog", "tsql", "parsing", "souffle"]
+license = "MIT"
+readme = "../README.md"
+
+[dependencies]
+anyhow = "1"
+treeedbgen-souffle = { version = "0.1.0", path = "../treeedbgen-souffle", features = ["cli"] }
+tree-sitter-tsql = { path = "../../tree-sitter-tsql" }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1"
+tempfile = "3"

@@ -86,13 +86,13 @@ pub fn main(language: tree_sitter::Language) -> Result<()> {
         let content = stdin_string()?;
         let tree = parse(language, &content)?;
         handle_parse_errors("<stdin>", &tree, &args.on_parse_error);
-        super::facts(&mut fc, content.as_bytes(), tree).unwrap();
+        super::facts(&mut fc, "stdin", content.as_bytes(), tree).unwrap();
     }
     for path in args.source_files {
         let content = read_file(&path)?;
         let tree = parse(language, &content)?;
         handle_parse_errors(&path, &tree, &args.on_parse_error);
-        super::facts(&mut fc, content.as_bytes(), tree).unwrap();
+        super::facts(&mut fc, &path, content.as_bytes(), tree).unwrap();
     }
     Ok(())
 }

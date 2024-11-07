@@ -29,7 +29,7 @@ fn node_with_fields(
     }
     writeln!(
         w,
-        "{}{}(as(x, {}{})) :- {}node(x, \"{}\", _, _, _, _, _, _, _, _, _, _, _).",
+        "{}{}(as(x, {}{})) :- {}node(_, x, \"{}\", _, _, _, _, _, _, _, _, _, _, _).",
         config.relation_prefix,
         rel_name,
         config.type_prefix,
@@ -80,7 +80,7 @@ fn node_with_fields(
         // writeln!(w, ".output {}(IO=stdout)", field_relation_name)?;
         writeln!(
             w,
-            "{}(x, as(y, {})) :- {}{}(x), {}field(x, \"{}\", y).",
+            "{}(x, as(y, {})) :- {}{}(x), {}field(_, x, \"{}\", y).",
             field_relation_name,
             field_type_name,
             config.relation_prefix,
@@ -103,7 +103,7 @@ fn node_with_fields(
             )?;
             writeln!(
                 w,
-                "{}(x, as(y, {})) :- {}{}(x), {}child(x, y).",
+                "{}(x, as(y, {})) :- {}{}(x), {}child(_, x, y).",
                 child_relation_name,
                 child_type_name,
                 config.relation_prefix,
@@ -215,11 +215,13 @@ fn declare_node(config: &PrivGenConfig, w: &mut impl Write) -> Result<(), GenErr
     writeln!(w, ".type {}EndRow <: number", config.type_prefix)?;
     writeln!(w, ".type {}EndCol <: number", config.type_prefix)?;
     writeln!(w, ".type {}NodeText <: symbol", config.type_prefix)?;
+    writeln!(w, ".type FilePath <: symbol")?;
     writeln!(
         w,
         ".decl {}node({})",
         config.relation_prefix,
         vec![
+            format!("sourcePath: FilePath"),
             format!("id: {}Node", config.type_prefix),
             format!("kind: {}NodeKind", config.type_prefix),
             format!("is_named: {}IsNamed", config.type_prefix),
@@ -244,7 +246,7 @@ fn declare_node(config: &PrivGenConfig, w: &mut impl Write) -> Result<(), GenErr
     )?;
     writeln!(
         w,
-        "{}node_text(x, y) :- {}node(x, _, _, _, _, _, _, _, _, _, _, _, y).",
+        "{}node_text(x, y) :- {}node(_, x, _, _, _, _, _, _, _, _, _, _, _, y).",
         config.relation_prefix, config.relation_prefix,
     )?;
     writeln!(
@@ -265,6 +267,7 @@ fn declare_field(config: &PrivGenConfig, w: &mut impl Write) -> Result<(), GenEr
         ".decl {}field({})",
         config.relation_prefix,
         [
+            format!("sourcePath: FilePath"),
             format!("parent: {}Node", config.type_prefix),
             format!("name: {}GrammarFieldName", config.type_prefix),
             format!("child: {}Node", config.type_prefix),
@@ -289,6 +292,7 @@ fn declare_child(config: &PrivGenConfig, w: &mut impl Write) -> Result<(), GenEr
         ".decl {}child({})",
         config.relation_prefix,
         [
+            format!("sourcePath: FilePath"),
             format!("parent: {}Node", config.type_prefix),
             format!("child: {}Node", config.type_prefix),
         ]
